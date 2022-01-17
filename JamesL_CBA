@@ -4,7 +4,6 @@ dataT=pd.read_csv("/content/drive/MyDrive/262CBA.csv")
 print(dataT)
 
 
-
 # set your own discount rate
 discountRate=0.05
 #calculate the compound discount over the years

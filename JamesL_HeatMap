@@ -1,0 +1,34 @@
+# library
+import seaborn as sns
+import pandas as pd
+import numpy as np
+
+#create a datafram (data table)
+df = pd.DataFrame(columns=['risk', 'likelihood', 'impact', 'score'])
+
+#Identify the list of uncertainties
+df['risk']=['users', 'team', 'budget', 'security',]
+
+#Estimate the likelihood of happening: [0,1]
+df['likelihood']=[0.3, 0.5, 0.4, 0.2]
+
+#Assess severity of impact if the uncertainty happens: pick a scale
+df['impact']=[1,2,7,10]
+df['score']=df['impact']*df['likelihood']
+
+
+#calculate scores
+df['score']=df['impact']*df['likelihood']
+
+#Create the heatmap
+scoresPivot=df.pivot('impact', 'likelihood', 'score')
+print(scoresPivot)
+
+labelsPivot=df.pivot('impact', 'likelihood', 'risk')
+print(labelsPivot)
+
+#replaces no labels with empty strings
+#labelsPivot.fillna('', inplace=True) (Extra code, this line is not needed and will achieve the same result)
+
+#simple heatmap
+p1=sns.heatmap(scoresPivot, cmap="YlOrBr", annot=labelsPivot, fmt='')

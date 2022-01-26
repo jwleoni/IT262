@@ -1,0 +1,42 @@
+#Create a table with four columns
+
+import pandas as pd
+import matplotlib.pyplot as plt
+from matplotlib.ticker import PercentFormatter
+
+#upload the HelpDesk.csv to your Google Drive
+df=pd.read_csv("/content/drive/MyDrive/HelpDesk.csv")
+print(df)
+
+#Sort descending based on frequencies
+
+#set this column as index - to use as plot labels
+df.index = df['reason']
+#descending sort
+df = df.sort_values(by='frequency', ascending=False)
+
+#Create a cumulative percentage column
+#cumulative percentage column is created using cumsum function
+df["cumulativePercentage"] = df["frequency"].cumsum()/df['frequency'].sum()*100
+
+#making sure only 2 decimal points are shown
+df['cumulativePercentage']=df['cumulativePercentage'].apply(lambda x: round(x,2))
+print(df)
+
+#Plot bar chart of frequencies and the cumulative curve
+fig, ax = plt.subplots()
+ax.bar(df.index, df['frequency'], color='C0')
+
+#show labels diagonally
+ax.set_xticklabels(df['reason'], rotation=45)
+
+#ax2 and ax1 will be shown at the same time with twinx
+ax2 = ax.twinx()
+
+ax2.plot(df.index, df['cumulativePercentage'], color="C1", marker="D", ms=7)
+ax2.yaxis.set_major_formatter(PercentFormatter())
+
+ax.tick_params(axis='y', colors='C0')
+ax2.tick_params(axis='y', colors='C1')
+
+plt.show()
